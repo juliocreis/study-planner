@@ -1,0 +1,1 @@
+// analyticSlice.js — informações extras, tarefas concluídas, pendentes, etc
