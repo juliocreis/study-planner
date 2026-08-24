@@ -1,26 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  tasks: [
-    {
-      id: 1,
-      name: 'Task 1',
-      description: 'Descrição 1',
-      completed: false
-    },
-    {
-      id: 2,
-      name: 'Task 2',
-      description: 'Descrição 2',
-      completed: false
-    },
-    {
-      id: 3,
-      name: 'Task 3',
-      description: 'Descrição 3',
-      completed: true
-    }
-  ],
+  tasks: [],
 };
 
 const taskSlice = createSlice({
@@ -57,9 +38,9 @@ const taskSlice = createSlice({
 
 export const { addTask, toggleTaskComplete, editTask, deleteTask } = taskSlice.actions;
 
-export const selectedTasks = (state) => state.tasks.tasks // A primeira task é o nome do Slice, a segunda é a propriedade do initialState
-export const pendingTasks = (state) => state.tasks.tasks.filter((task) => !task.completed)
-export const completedTasks = (state) => state.tasks.tasks.filter((task) => task.completed)
+export const selectTasks = (state) => state.tasks.tasks // A primeira task é o nome do Slice, a segunda é a propriedade do initialState
+export const selectPendingTasks = (state) => state.tasks.tasks.filter((task) => !task.completed)
+export const selectCompletedTasks = (state) => state.tasks.tasks.filter((task) => task.completed)
 
 export default taskSlice.reducer // reducer é a função única que o createSlice monta por trás dos panos, unificando todas
 
