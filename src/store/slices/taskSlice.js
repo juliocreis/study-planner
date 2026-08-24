@@ -38,9 +38,9 @@ const taskSlice = createSlice({
 
 export const { addTask, toggleTaskComplete, editTask, deleteTask } = taskSlice.actions;
 
-export const selectedTasks = (state) => state.tasks.tasks
-export const pendingTasks = (state) => state.tasks.tasks.filter((task) => !task.completed)
-export const completedTasks = (state) => state.tasks.tasks.filter((task) => task.completed)
+export const selectTasks = (state) => state.tasks.tasks // A primeira task é o nome do Slice, a segunda é a propriedade do initialState
+export const selectPendingTasks = (state) => state.tasks.tasks.filter((task) => !task.completed)
+export const selectCompletedTasks = (state) => state.tasks.tasks.filter((task) => task.completed)
 
 export default taskSlice.reducer // reducer é a função única que o createSlice monta por trás dos panos, unificando todas
 
