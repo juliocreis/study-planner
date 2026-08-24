@@ -1,7 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  tasks: [],
+  tasks: [
+    {
+      id: 1,
+      name: 'Task 1',
+      description: 'Descrição 1',
+      completed: false
+    },
+    {
+      id: 2,
+      name: 'Task 2',
+      description: 'Descrição 2',
+      completed: false
+    },
+    {
+      id: 3,
+      name: 'Task 3',
+      description: 'Descrição 3',
+      completed: true
+    }
+  ],
 };
 
 const taskSlice = createSlice({
@@ -38,7 +57,7 @@ const taskSlice = createSlice({
 
 export const { addTask, toggleTaskComplete, editTask, deleteTask } = taskSlice.actions;
 
-export const selectedTasks = (state) => state.tasks.tasks
+export const selectedTasks = (state) => state.tasks.tasks // A primeira task é o nome do Slice, a segunda é a propriedade do initialState
 export const pendingTasks = (state) => state.tasks.tasks.filter((task) => !task.completed)
 export const completedTasks = (state) => state.tasks.tasks.filter((task) => task.completed)
 
