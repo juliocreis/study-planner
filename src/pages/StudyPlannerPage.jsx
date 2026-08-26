@@ -53,7 +53,7 @@ function StudyPlannerPage() {
   };
 
   const handleSaveEditTask = (taskId, updatedTask) => {
-    dispatch(editTask(taskId, updatedTask));
+    dispatch(editTask({ taskId, updatedTask }));
   };
 
   const handleDeleteTask = (taskId) => {
