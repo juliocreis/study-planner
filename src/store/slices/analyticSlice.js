@@ -1,1 +1,44 @@
 // analyticSlice.js — informações extras, tarefas concluídas, pendentes, etc
+
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  totalTasks: 0,
+  pendingTasks: 0,
+  completedTasks: 0,
+  overdueTasks: 0,
+  tasksPercentage: 0,
+};
+
+const analyticSlice = createSlice({
+  name: "analytics",
+  initialState,
+  reducer: {
+    updatedTask: (state, action) => {
+      const tasks = action.payload;
+      const currentDate = new Date();
+      currentDate.setHours(23, 59, 59, 999);
+
+      state.totalTasks = tasks.length;
+      state.pendingTasks = tasks.filter((task) => !task.completed).length;
+      state.completedTasks = tasks.filter((task) => task.completed).length;
+
+      state.overdueTasks = tasks.filter((task) => {
+        if (task.completed || !task.date) return false;
+        const taskDate = new Date(task.date);
+        return taskDate < currentDate;
+      }).length;
+
+      state.tasksPercentage =
+        state.totalTasks > 0
+          ? Math.round((state.completedTasks / state.totalTasks) * 100)
+          : 0;
+    },
+  },
+});
+
+export const { updatedTask } = analyticSlice.actions;
+
+export const selectedAnalytics = (state) => state.analytics;
+
+export default analyticSlice.reducer;
