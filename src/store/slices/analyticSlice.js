@@ -7,14 +7,14 @@ const initialState = {
   pendingTasks: 0,
   completedTasks: 0,
   overdueTasks: 0,
-  tasksPercentage: 0,
+  completionPercentage: 0,
 };
 
 const analyticSlice = createSlice({
   name: "analytics",
   initialState,
-  reducer: {
-    updatedTask: (state, action) => {
+  reducers: {
+    updateAnalytics: (state, action) => {
       const tasks = action.payload;
       const currentDate = new Date();
       currentDate.setHours(23, 59, 59, 999);
@@ -37,8 +37,8 @@ const analyticSlice = createSlice({
   },
 });
 
-export const { updatedTask } = analyticSlice.actions;
+export const { updateAnalytics } = analyticSlice.actions;
 
-export const selectedAnalytics = (state) => state.analytics;
+export const selectAnalytics = (state) => state.analytics;
 
 export default analyticSlice.reducer;
