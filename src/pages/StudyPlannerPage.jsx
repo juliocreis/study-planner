@@ -5,7 +5,7 @@ import { EmptyState, ThemeToggle } from '../components/UI'
 import { AddTaskModal, EditTaskModal } from '../components/Modal'
 import { TaskSection } from '../components/Task'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectTasks, selectPendingTasks, selectCompletedTasks, addTask } from '../store/slices/taskSlice'
+import { selectTasks, selectPendingTasks, selectCompletedTasks, addTask, toggleTaskComplete } from '../store/slices/taskSlice'
 
 function StudyPlannerPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -40,7 +40,7 @@ function StudyPlannerPage() {
   }
 
   const handleToggleComplete = (taskId) => {
-    toggleTaskComplete(taskId)
+    dispatch(toggleTaskComplete(taskId))
   }
 
   const handleEditTask = (taskId) => {
