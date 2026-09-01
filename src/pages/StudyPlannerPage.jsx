@@ -4,12 +4,14 @@ import { useTheme } from '../contexts/ThemeContext'
 import { EmptyState, ThemeToggle } from '../components/UI'
 import { AddTaskModal, EditTaskModal } from '../components/Modal'
 import { TaskSection } from '../components/Task'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectTasks, selectPendingTasks, selectCompletedTasks, addTask } from '../store/slices/taskSlice'
 
 function StudyPlannerPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [taskToEdit, setTaskToEdit] = useState(null)
-  const {
+  /* const {
     tasks,
     addTask,
     toggleTaskComplete,
@@ -17,7 +19,13 @@ function StudyPlannerPage() {
     deleteTask,
     getPendingTasks,
     getCompletedTasks
-  } = useTasks()
+  } = useTasks() */
+
+  // Redux
+  const tasks = useSelector(selectTasks);
+  const pendingTasks = useSelector(selectPendingTasks);
+  const completedTasks = useSelector(selectCompletedTasks);
+  const dispatch = useDispatch();
 
   const handleAddTask = () => {
     setIsModalOpen(true)
@@ -28,7 +36,7 @@ function StudyPlannerPage() {
   }
 
   const handleAddNewTask = (newTask) => {
-    addTask(newTask)
+    dispatch(addTask(newTask));
   }
 
   const handleToggleComplete = (taskId) => {
@@ -54,8 +62,6 @@ function StudyPlannerPage() {
     deleteTask(taskId)
   }
 
-  const pendingTasks = getPendingTasks()
-  const completedTasks = getCompletedTasks()
   const theme = useTheme()
 
   return (
