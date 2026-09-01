@@ -9,4 +9,6 @@ export const store = configureStore({
     theme: themeReducer,
     analytics: analyticsReducer
   },
+
+  devTools: process.env.NODE_ENV !== 'production'
 })
