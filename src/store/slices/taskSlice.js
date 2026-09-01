@@ -1,46 +1,41 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  tasks: [],
+    tasks: []
 };
 
 const taskSlice = createSlice({
-  name: "tasks",
-  initialState,
-  reducers: {
-    addTask: (state, action) => {
-      const taskWithId = {
-        ...action.payload,
-        id: Date.now(),
-        completed: false,
-      };
-      state.tasks.push(taskWithId);
-    },
+    name: 'tasks',
+    initialState,
+    reducers: {
+        addTask: (state, action) => {
+            const taskWithId = {
+                ...action.payload,
+                id: Date.now(),
+                completed: false
+            }
 
-    toggleTaskComplete: (state, action) => {
-      const task = state.tasks.find(task => task.id === action.payload);
-      if (task) task.completed = !task.completed;
-    },
+            state.tasks = [...state.tasks, taskWithId];
+        },
 
-    editTask: (state, action) => {
-      const { taskId, updatedTask } = action.payload;
-      const taskIndex = state.tasks.findIndex((task) => task.id === taskId);
-      if(taskIndex !== -1) {
-        state.tasks[taskIndex] = { ...state.tasks[taskIndex], ...updatedTask }
-      }
-    },
-
-    deleteTask: (state, action) => {
-      state.tasks = state.tasks.filter((task) => task.id !== action.payload)
+        toggleTaskComplete: (state, action) => {
+            state.tasks = state.tasks.map((task) => {
+                if(action.payload === task.id) {
+                    return {
+                        ...task,
+                        completed: !task.completed
+                    }
+                }
+                return task;
+            })
+        }
     }
-  },
 });
 
-export const { addTask, toggleTaskComplete, editTask, deleteTask } = taskSlice.actions;
+export const { addTask, toggleTaskComplete } = taskSlice.actions
 
-export const selectTasks = (state) => state.tasks.tasks // A primeira task é o nome do Slice, a segunda é a propriedade do initialState
+export const selectTasks = (state) => state.tasks.tasks
 export const selectPendingTasks = (state) => state.tasks.tasks.filter((task) => !task.completed)
 export const selectCompletedTasks = (state) => state.tasks.tasks.filter((task) => task.completed)
 
-export default taskSlice.reducer // reducer é a função única que o createSlice monta por trás dos panos, unificando todas
-
+export default taskSlice.reducer

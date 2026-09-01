@@ -1,41 +1,31 @@
-import { useEffect, useState } from "react";
-import { EmptyState, ThemeToggle } from "../components/UI";
-import { AddTaskModal, EditTaskModal } from "../components/Modal";
-import { TaskSection } from "../components/Task";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addTask,
-  deleteTask,
-  editTask,
-  selectCompletedTasks,
-  selectPendingTasks,
-  selectTasks,
-  toggleTaskComplete,
-} from "../store/slices/taskSlice";
-import { selectTheme } from "../store/slices/themeSlice";
-import {
-  selectAnalytics,
-  updateAnalytics,
-} from "../store/slices/analyticSlice";
+import { useState } from 'react'
+import { useTasks } from '../contexts/TaskContext'
+import { useTheme } from '../contexts/ThemeContext'
+import { EmptyState, ThemeToggle } from '../components/UI'
+import { AddTaskModal, EditTaskModal } from '../components/Modal'
+import { TaskSection } from '../components/Task'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectTasks, selectPendingTasks, selectCompletedTasks, addTask, toggleTaskComplete } from '../store/slices/taskSlice'
 
 function StudyPlannerPage() {
-  const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [taskToEdit, setTaskToEdit] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [taskToEdit, setTaskToEdit] = useState(null)
+  /* const {
+    tasks,
+    addTask,
+    toggleTaskComplete,
+    editTask,
+    deleteTask,
+    getPendingTasks,
+    getCompletedTasks
+  } = useTasks() */
 
   // Redux
   const tasks = useSelector(selectTasks);
   const pendingTasks = useSelector(selectPendingTasks);
   const completedTasks = useSelector(selectCompletedTasks);
-
-  const theme = useSelector(selectTheme);
-
-  const analytics = useSelector(selectAnalytics);
-
-  useEffect(() => {
-    dispatch(updateAnalytics(tasks));
-  }, [tasks, dispatch]);
+  const dispatch = useDispatch();
 
   const handleAddTask = () => {
     setIsModalOpen(true);
@@ -47,11 +37,11 @@ function StudyPlannerPage() {
 
   const handleAddNewTask = (newTask) => {
     dispatch(addTask(newTask));
-  };
+  }
 
   const handleToggleComplete = (taskId) => {
-    dispatch(toggleTaskComplete(taskId));
-  };
+    dispatch(toggleTaskComplete(taskId))
+  }
 
   const handleEditTask = (taskId) => {
     const task = tasks.find((t) => t.id === taskId);
@@ -69,8 +59,10 @@ function StudyPlannerPage() {
   };
 
   const handleDeleteTask = (taskId) => {
-    dispatch(deleteTask(taskId));
-  };
+    deleteTask(taskId)
+  }
+
+  const theme = useTheme()
 
   return (
     <div
