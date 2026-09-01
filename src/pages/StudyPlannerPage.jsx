@@ -28,12 +28,12 @@ function StudyPlannerPage() {
   const dispatch = useDispatch();
 
   const handleAddTask = () => {
-    setIsModalOpen(true)
-  }
+    setIsModalOpen(true);
+  };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false)
-  }
+    setIsModalOpen(false);
+  };
 
   const handleAddNewTask = (newTask) => {
     dispatch(addTask(newTask));
@@ -44,19 +44,19 @@ function StudyPlannerPage() {
   }
 
   const handleEditTask = (taskId) => {
-    const task = tasks.find(t => t.id === taskId)
-    setTaskToEdit(task)
-    setIsEditModalOpen(true)
-  }
+    const task = tasks.find((t) => t.id === taskId);
+    setTaskToEdit(task);
+    setIsEditModalOpen(true);
+  };
 
   const handleCloseEditModal = () => {
-    setIsEditModalOpen(false)
-    setTaskToEdit(null)
-  }
+    setIsEditModalOpen(false);
+    setTaskToEdit(null);
+  };
 
   const handleSaveEditTask = (taskId, updatedTask) => {
-    editTask(taskId, updatedTask)
-  }
+    dispatch(editTask({ taskId, updatedTask }));
+  };
 
   const handleDeleteTask = (taskId) => {
     deleteTask(taskId)
@@ -65,13 +65,13 @@ function StudyPlannerPage() {
   const theme = useTheme()
 
   return (
-    <div 
+    <div
       className="min-h-screen flex items-center justify-center p-4"
       style={{
         backgroundImage: theme.background,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundColor: theme.backgroundColor
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundColor: theme.backgroundColor,
       }}
     >
       <div className="w-full max-w-md">
@@ -79,19 +79,21 @@ function StudyPlannerPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="material-icons text-white text-lg">school</span>
-              <h1 className="text-white font-medium text-lg">Plano de Estudos</h1>
+              <h1 className="text-white font-medium text-lg">
+                Plano de Estudos
+              </h1>
             </div>
             <ThemeToggle />
           </div>
         </div>
-        
+
         <div className={`${theme.cardBg} rounded-b-2xl p-6`}>
           {tasks.length === 0 ? (
             <EmptyState onAddTask={handleAddTask} />
           ) : (
             <div>
               <TaskSection
-                title="Para estudar"
+                title={`Para estudar (${analytics.pendingTasks})`}
                 tasks={pendingTasks}
                 borderColor="gray-600"
                 onToggleComplete={handleToggleComplete}
@@ -100,7 +102,7 @@ function StudyPlannerPage() {
               />
 
               <TaskSection
-                title="Concluído"
+                title={`Concluído (${analytics.completedTasks})`}
                 tasks={completedTasks}
                 borderColor="purple-header"
                 onToggleComplete={handleToggleComplete}
@@ -108,35 +110,48 @@ function StudyPlannerPage() {
                 onDelete={handleDeleteTask}
               />
 
-              <div className="flex justify-center mt-8">
-                <button
-                  onClick={handleAddTask}
-                  className="w-12 h-12 bg-purple-header hover:bg-purple-dark transition-colors rounded-full flex items-center justify-center"
-                  aria-label="Adicionar tarefa"
-                >
-                  <span className="material-icons text-white text-xl">add</span>
-                </button>
+              <div className="mt-8">
+                <div className='flex justify-between items-center mb-4'>
+                  <div className={`text-sm ${theme.textSecondary}`}>
+                    <span>Total: {analytics.totalTasks}</span>
+                    <span className='ml-4'>Concluído: {analytics.completionPercentage}%</span>
+                  </div>
+
+                  {analytics.overdueTasks > 0 && (
+                    <div className="text-sm text-red-500 font-semibold">
+                      Atrasadas: {analytics.overdueTasks}
+                    </div>
+                  )}
+                </div>
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleAddTask}
+                    className="w-12 h-12 bg-purple-header hover:bg-purple-dark transition-colors rounded-full flex items-center justify-center"
+                    aria-label="Adicionar tarefa"
+                  >
+                    <span className="material-icons text-white text-xl">add</span>
+                  </button>
+                </div>
               </div>
             </div>
           )}
         </div>
-        
       </div>
-      
-      <AddTaskModal 
+
+      <AddTaskModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onAddTask={handleAddNewTask}
       />
-      
-      <EditTaskModal 
+
+      <EditTaskModal
         isOpen={isEditModalOpen}
         onClose={handleCloseEditModal}
         onEditTask={handleSaveEditTask}
         task={taskToEdit}
       />
     </div>
-  )
+  );
 }
 
-export default StudyPlannerPage
+export default StudyPlannerPage;
